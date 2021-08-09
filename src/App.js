@@ -59,13 +59,13 @@ function App() {
     )
   }, [])
   //Places Data Dispatch Function
-  useEffect(() => {
-    // dispatch(changeLoading(isLoading));
+  useEffect((isLoading) => {
+    dispatch(changeLoading(isLoading));
     getPlacesData(type, bounds.sw, bounds.ne)
       .then(
         (data) => {
           dispatch(placesData(data));
-          // dispatch(changeLoading(isLoading));
+          dispatch(changeLoading(isLoading));
         }
       );
   }, [type, bounds])
@@ -79,7 +79,7 @@ function App() {
         });
   }, [coordinates])
   useEffect(
-    () => {
+    (data) => {
       if (data) {
         const filterPlace = data.filter((place) => place.rating > rate)
         dispatch(placesData(filterPlace))
