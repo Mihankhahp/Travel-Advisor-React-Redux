@@ -59,25 +59,24 @@ function App() {
     )
   }, [])
   //Places Data Dispatch Function
-  useEffect((isLoading) => {
+  useEffect((isLoading, coordinates) => {
     dispatch(changeLoading(isLoading));
-    getPlacesData(type, bounds.sw, bounds.ne)
-      .then(
-        (data) => {
-          dispatch(placesData(data));
-          dispatch(changeLoading(isLoading));
-        }
-      );
+    if (coordinates && bounds) {
+      getWeatherData(coordinates.lat, coordinates.lng)
+        .then(
+          (data) => {
+            dispatch(weatherData(data));
+            console.log('weather data:' + data)
+          });
+      getPlacesData(type, bounds.sw, bounds.ne)
+        .then(
+          (data) => {
+            dispatch(placesData(data));
+            dispatch(changeLoading(isLoading));
+          }
+        );
+    }
   }, [type, bounds])
-
-  useEffect(() => {
-    getWeatherData(coordinates.lat, coordinates.lng)
-      .then(
-        (data) => {
-          dispatch(weatherData(data));
-          console.log('weather data:' + data)
-        });
-  }, [coordinates])
   useEffect(
     (data) => {
       if (data) {
